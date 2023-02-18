@@ -1,0 +1,33 @@
+{# empty Twig template #}
+{% extends 'base.html.twig' %}
+
+
+{% block content %}
+    <div>
+        <a href="{{ path('users') }}" class="btn btn-lg btn-default highlight_black stylish ">Back to List</a>
+    </div>
+    <br/><br/>
+
+    <div id="divFormUsers">
+        {# <td>{{ form_row(form_who.lights,{'attr': {'class': 'tcselect2'} }) }} </td>  #}
+        {# {{ form(form) }} #}
+
+         
+        {{ form_start(form) }}
+            <div> {{ form_row(form.name) }} </div>        
+            <div>
+                {{ form_label(form.mobile) }}
+                {{ form_widget(form.mobile) }}                
+            </div>
+            <br/>
+            <div> {{ form_row(form.submit, { 'label': 'Save' }) }} </div>        
+        {{ form_end(form) }}
+        
+    </div>    
+{% endblock %}
+
+
+{% block javascripts %}                           
+    {# <script type="text/javascript" src="../js/main.js"></script> #}
+    <script src="{{ asset('js/main.js') }}"></script>    
+{% endblock %}

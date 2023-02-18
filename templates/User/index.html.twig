@@ -1,0 +1,51 @@
+{# empty Twig template #}
+{% extends 'base.html.twig' %}
+
+{% block content %}
+	<div>
+		<h1>Hello User Twig
+			{{ user_first_name }}!</h1>
+		<div>
+			<a href="{{ path('app_user_create') }}" class="btn btn-lg btn-default highlight_black stylish ">Add New</a>
+		</div>
+		<br/><br/>
+
+		<table border="1|0">
+			<thead>
+				<tr>
+					<th>Name
+					</th>
+					<th>Mobile
+					</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user.name }}</td>
+						<td class="usr_hover">{{ user.mobile }}</td>
+						<td>
+							<a href=/user/view/{{user.id}}><img class="action-icon" src="{{ asset('images/view.png') }}" title="View" alt="View!"/></a>
+							<a href=/user/edit/{{user.id}}>
+								<img class="action-icon" src="{{ asset('images/edit.png') }}" title="Edit" alt="Edit!"/></a>
+							<a href=/user/delete/{{user.id}} onclick="return confirm('Are u sure?')"><img class="action-icon" src="{{ asset('images/delete.png') }}" title="Delete" alt="Delete!"/>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div>
+			<p>This is my Global Variable :
+				{{ ga_code }}</p>
+		</div>
+		<div>Translated Text here : {{ transSFText }}</div>
+		<div>Again : {{ 'symfony_is_great.label'|trans }}</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript" src="../js/main.js"></script>
+{% endblock %}

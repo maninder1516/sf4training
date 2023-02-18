@@ -1,0 +1,15 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+
+index:
+    path: /hello
+    controller: App\Controller\DefaultController::hello
+    
+    
+hello2:
+    path: /hello2
+    controller: App\Controller\DefaultController::hello2
+    
+   

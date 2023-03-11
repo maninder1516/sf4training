@@ -7,8 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-class DefaultController extends AbstractController
-{    
+class DefaultController extends AbstractController {
     public function hello()
     {        
         return new Response(

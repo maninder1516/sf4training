@@ -44,11 +44,21 @@
                             <div class="user-block">                                
                                 <span class="description">Description: {{ product.description }}</span>
                                 <span class="description">Price : {{ product.price }}</span>
-                                
+                                <span class="description">Make Date : {{ product.makeDate is empty ? "" : product.makeDate|date('Y-m-d') }}</span>
+                                <span class="description">Expiry Date : {{ product.expiryDate is empty ? "" : product.expiryDate|date('Y-m-d') }}</span>
+                                {% if product.id and  product.image %}
+                                    <span class="description">File  : {{ product.image }}  <a href="/product/download/{{ product.id }}" class="ml5mr5 font-weight-bold"> Download</a></span>
+                                {% endif %}
                             </div>
                             <!-- /.user-block -->                            
                             {# <p>Description: {{ product.description }}</p>
                             <p>Price : {{ product.price }}</p> #}
+                        </div>
+                    </div>
+                    <div></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="{{ path('app_products') }}" class="btn btn-secondary font-weight-bold">Cancel</a>
                         </div>
                     </div>
                 </div>

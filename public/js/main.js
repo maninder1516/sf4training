@@ -53,8 +53,7 @@ $(document).ready(function() {
     //     $(this).css('background-color', '#000');
     // });
 
-    // Date picker    
-    $('#product_make_date').datetimepicker({
-        format: 'L'
+    $('#make_date, #expiry_date').datepicker({
+        format: 'L'  
     });
 });

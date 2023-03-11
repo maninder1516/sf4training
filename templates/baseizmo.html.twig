@@ -234,13 +234,20 @@
 		</div>
 		<!-- ./wrapper -->
 
+
+
+		
 		<!-- jQuery -->
-		<script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script> 
+		<script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>
         <!-- jQuery UI 1.13.2-->
         <script src="{{ asset('js/jquery-ui.js') }}"></script>
         <!-- Bootstrap 4 -->
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>				
 		<!-- AdminLTE -->        
-		<script src="../../dist/js/adminlte.min.js"></script>	
+		<script src="../../dist/js/adminlte.min.js"></script>
+		<!-- Page specific script -->
+		{% block javascripts %}           
+           
+        {% endblock %}	
 	</body>
 </html>

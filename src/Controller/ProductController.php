@@ -13,6 +13,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Service\ProductService as ServiceProduct;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use App\Service\FileUploader;
 
 class ProductController extends AbstractController {
 
@@ -72,9 +77,23 @@ class ProductController extends AbstractController {
             if ($form->isSubmitted()) {
                 // Get the form Data
                 $product = $form->getData();
+                //Get Non-Form Data                
+                $strMakeDate =  $request->request->get("make_date");
+                $expiryDate = $request->request->get("expiry_date");
 
+                // If File is being Uploaded
+                $filename = '';
+                $uploadedFile = $form->get('image')->getData();                
+                if ($uploadedFile) {                    
+                    $fileUploader = new FileUploader($this->logger, $this->getParameter('file_directory'));                    
+                    $fileName = $fileUploader->upload($uploadedFile);                   
+                }
+                
                 // Save/Update the form Data
                 $em = $this->getDoctrine()->getManager();
+                $product->setMakeDate(new \DateTime($strMakeDate));                 
+                $product->setExpiryDate(new \DateTime($expiryDate));
+                $product->setImage($fileName);
                 $em->persist($product);
                 $em->flush();
 
@@ -92,6 +111,7 @@ class ProductController extends AbstractController {
 
             return $this->render('product/update.html.twig', [
                         'form' => $form->createView(),
+                        'product' => $product
             ]);
         } catch (\Exception $ex) {
             $this->logger->critical('Error occured while viewing the product information!', [
@@ -106,7 +126,7 @@ class ProductController extends AbstractController {
     public function show($id) {
         try {
             $product = new ServiceProduct($this->getDoctrine()->getManager(), Product::class);
-            $product = $product->getProduct($id);
+            $product = $product->getProduct($id);            
             // Check if the Product exists
             if (!$product) {
                 throw $this->createNotFoundException(
@@ -138,6 +158,37 @@ class ProductController extends AbstractController {
             return $this->redirectToRoute('app_products');
         } catch (\Exception $ex) {
             $this->logger->critical('Error occured while deleting the product information!', [
+                'cause' => $ex
+            ]);
+        }
+    }
+  
+    /**
+     * @Route ("/product/download/{id}", name= "pdf_download")     
+     */
+    public function download($id) {
+        try {
+            $product = new ServiceProduct($this->getDoctrine()->getManager(), Product::class);
+            $product = $product->getProduct($id);            
+            // Check if the Product exists
+            if (!$product) {
+                throw $this->createNotFoundException(
+                                'No product found for id ' . $id
+                );
+            }
+            $fileName = $product->getImage(); 
+            $file =  $this->getParameter('file_directory').'/'.$fileName;                               
+            if (!file_exists($file)) { 
+                $this->logger->critical('File at file path is not found :'.$file, [
+                    'cause' => $ex
+                ]);               
+                exit;
+            }
+            $response = new BinaryFileResponse($file);
+            $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
+            return $response;            
+        } catch (\Exception $ex) {
+            $this->logger->critical('Error occured while downloading the file!', [
                 'cause' => $ex
             ]);
         }

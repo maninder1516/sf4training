@@ -6,3 +6,13 @@
 .btn-cancel {    
     margin-right: 10px;
 }
+.clear {
+    clear: both;
+}
+.ml5 {
+    margin-left: 5px;    
+}
+.ml5mr5 {
+    margin-left: 5px;
+    margin-right: 5px;
+}

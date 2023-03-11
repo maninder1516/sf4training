@@ -25,7 +25,8 @@ abstract class AbstractService {
      * @return array
      */
     protected function findAll() {        
-        return $this->model->findAll();        
+        return $this->model->findBy([], ['id' => 'DESC']);
+        //return $this->model->findAll();                
     }   
 
     /**
@@ -33,7 +34,7 @@ abstract class AbstractService {
      * @return null|object
      */
     protected function find($id)
-    {
+    {   
         return $this->model->find($id);
     }
 
